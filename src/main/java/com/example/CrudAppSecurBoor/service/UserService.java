@@ -1,19 +1,24 @@
 package com.example.CrudAppSecurBoor.service;
 
 
+import com.example.CrudAppSecurBoor.models.Role;
 import com.example.CrudAppSecurBoor.models.User;
 
 import java.util.List;
 
 public interface UserService {
-    void save(User user);
+    List<User> getAllUsers();
+
+    User save(User user);
+
+    User show(Long id);
+
+    User update(User user);
+
+    Role showRole(Long id);
 
     void delete(Long id);
 
-    void edit(User user);
-
-    User printUserById(Long id);
-
-    List<User> printUsers();
+    User findByUserName(String userName);
 
 }

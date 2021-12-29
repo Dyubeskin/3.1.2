@@ -46,7 +46,9 @@ package com.example.CrudAppSecurBoor.service;
 
 
 
+import com.example.CrudAppSecurBoor.models.Role;
 import com.example.CrudAppSecurBoor.models.User;
+import com.example.CrudAppSecurBoor.repository.RoleRepo;
 import com.example.CrudAppSecurBoor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,39 +59,52 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepo roleRepository;
 
-    public UserServiceImpl(UserRepository userRepository){
-        this.userRepository = userRepository;
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
+    @Override
+    public User show(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        return optionalUser.get();
+    }
+
+    @Override
+    public Role showRole(Long id) {
+        Optional<Role> optionalUser = roleRepository.findById(Math.toIntExact(id));
+
+        return optionalUser.get();
+    }
+
+    @Override
+    public User update(User user) {
+
+        return userRepository.save(user);
+    }
+
+    @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
 
-    public void edit(User editUser) {
-        userRepository.save(editUser);
+    @Override
+    public User findByUserName(String userName) {
+        return userRepository.findUserByEmail(userName);
     }
-
-    public User printUserById(Long id) {
-        return userRepository.getOne(id);
-    }
-
-    public List<User> printUsers(){
-        return userRepository.findAll();
-    }
-
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(email);
-    }
-
 }
