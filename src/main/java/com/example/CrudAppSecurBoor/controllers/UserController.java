@@ -24,9 +24,8 @@ public class UserController {
 
     @GetMapping()
     public String printUsers(ModelMap model, @AuthenticationPrincipal User user) {
-        model.addAttribute("users", userServiceImpl.printUsers());
         model.addAttribute("user", user);
-
+        model.addAttribute("roles", user.getRoles());
         return "users/userindex";
     }
 
